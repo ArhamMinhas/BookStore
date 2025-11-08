@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CartService } from '../../shared/services/cart.service';
 import { ToastService } from '../../shared/services/toast.service';
 
@@ -14,7 +14,11 @@ import { ToastService } from '../../shared/services/toast.service';
 export class Cart implements OnInit {
   cartItems: any[] = [];
 
-  constructor(private cart: CartService, private toast: ToastService) {}
+  constructor(
+    private cart: CartService,
+    private toast: ToastService,
+    private router: Router // ✅ Added Router for navigation
+  ) {}
 
   ngOnInit(): void {
     this.cart.cartItems$.subscribe(items => (this.cartItems = items));
@@ -46,5 +50,6 @@ export class Cart implements OnInit {
 
   checkout() {
     this.toast.show('Proceeding to checkout...', 'success');
+    this.router.navigate(['/checkout']); // ✅ Smooth navigation
   }
 }

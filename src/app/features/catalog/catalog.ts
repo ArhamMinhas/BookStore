@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BookCard } from '../../shared/components/book-card/book-card';
 import { RouterModule } from '@angular/router';
 import { CartService } from '../../shared/services/cart.service';
 import { ToastService } from '../../shared/services/toast.service';
+import { SearchService } from '../../shared/services/search.service';
+import { WishlistService } from '../../shared/services/wishlist.services';
 
 @Component({
   selector: 'app-catalog',
@@ -12,7 +14,7 @@ import { ToastService } from '../../shared/services/toast.service';
   templateUrl: './catalog.html',
   styleUrl: './catalog.css'
 })
-export class Catalog {
+export class Catalog implements OnInit {
   showFilters = true;
 
   // --- Filter Data ---
@@ -33,7 +35,19 @@ export class Catalog {
 
   filteredBooks = [...this.books]; // default all
 
-  constructor(private cart: CartService, private toast: ToastService) {}
+  constructor(
+    private cart: CartService,
+    private toast: ToastService,
+    private searchService: SearchService,
+    private wishlist: WishlistService
+  ) {}
+
+  ngOnInit(): void {
+    // Watch search bar input from header
+    this.searchService.searchTerm$.subscribe(term => {
+      this.applyFilters(term);
+    });
+  }
 
   // --- Category Selection ---
   toggleCategory(category: string) {
@@ -61,8 +75,8 @@ export class Catalog {
     this.applyFilters();
   }
 
-  // --- Apply Filters ---
-  applyFilters() {
+  // --- Apply Filters + Search ---
+  applyFilters(searchTerm: string = '') {
     this.filteredBooks = this.books.filter(book => {
       const matchCategory =
         this.selectedCategories.length === 0 ||
@@ -79,7 +93,13 @@ export class Catalog {
         this.selectedRatings.length === 0 ||
         this.selectedRatings.some(r => book.rating >= r);
 
-      return matchCategory && matchPrice && matchRating;
+      const matchSearch =
+        !searchTerm ||
+        book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        book.category.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return matchCategory && matchPrice && matchRating && matchSearch;
     });
   }
 
@@ -87,5 +107,11 @@ export class Catalog {
   addToCart(book: any) {
     this.cart.addToCart({ ...book, quantity: 1 });
     this.toast.show(`${book.title} added to cart 🛒`, 'success');
+  }
+
+  // --- Add to Wishlist ---
+  addToWishlist(book: any) {
+    this.wishlist.addToWishlist(book);
+    this.toast.show(`${book.title} added to wishlist ❤️`, 'info');
   }
 }

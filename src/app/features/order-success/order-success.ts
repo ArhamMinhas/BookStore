@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-order-success',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './order-success.html',
-  styleUrl: './order-success.css',
+  styleUrl: './order-success.css'
 })
 export class OrderSuccess {
-
+  orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
 }

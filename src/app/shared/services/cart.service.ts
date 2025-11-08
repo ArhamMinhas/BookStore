@@ -1,53 +1,60 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+export interface CartItem {
+  id: string;
+  title?: string;
+  price: number;
+  quantity: number;
+  [key: string]: any;
+}
+
+@Injectable({ providedIn: 'root' })
 export class CartService {
-  private cartItemsSubject = new BehaviorSubject<any[]>([]);
+  private cartItems: CartItem[] = [];
+  private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
+  private cartCountSubject = new BehaviorSubject<number>(0);
+
   cartItems$ = this.cartItemsSubject.asObservable();
+  cartCount$ = this.cartCountSubject.asObservable();
 
-  constructor() {
-    // Load existing cart from localStorage
-    const stored = localStorage.getItem('cartItems');
-    if (stored) this.cartItemsSubject.next(JSON.parse(stored));
-  }
-
-  /** Get current items */
-  getItems() {
-    return this.cartItemsSubject.getValue();
-  }
-
-  /** Add an item */
-  addToCart(item: any) {
-    const items = this.getItems();
-    const existing = items.find(i => i.id === item.id);
-
+  addToCart(item: Partial<CartItem> & { id: string; price: number; quantity?: number }) {
+    const qty = item.quantity ?? 1;
+    const existing = this.cartItems.find(b => b.id === item.id);
     if (existing) {
-      existing.quantity += item.quantity || 1;
+      existing.quantity = (existing.quantity || 0) + qty;
     } else {
-      items.push({ ...item, quantity: item.quantity || 1 });
+      this.cartItems.push({ ...item, quantity: qty } as CartItem);
     }
-
-    this.updateCart(items);
+    this.emitCart();
   }
 
-  /** Update cart (persist to localStorage) */
-  updateCart(items: any[]) {
-    localStorage.setItem('cartItems', JSON.stringify(items));
-    this.cartItemsSubject.next(items);
+  /**
+   * Replace entire cart with provided items (useful for bulk updates)
+   */
+  updateCart(items: CartItem[]) {
+    this.cartItems = items.map(i => ({ ...i, quantity: Math.max(1, i.quantity || 1) }));
+    this.emitCart();
   }
 
-  /** Remove item */
   removeItem(id: string) {
-    const updated = this.getItems().filter(i => i.id !== id);
-    this.updateCart(updated);
+    this.cartItems = this.cartItems.filter(i => i.id !== id);
+    this.emitCart();
   }
 
-  /** Clear all */
   clearCart() {
-    localStorage.removeItem('cartItems');
-    this.cartItemsSubject.next([]);
+    this.cartItems = [];
+    this.emitCart();
+  }
+
+  getItems(): CartItem[] {
+    return [...this.cartItems];
+  }
+
+  private emitCart() {
+    // push snapshot of items and update count
+    this.cartItemsSubject.next([...this.cartItems]);
+    const count = this.cartItems.reduce((sum, i) => sum + (i.quantity || 0), 0);
+    this.cartCountSubject.next(count);
   }
 }
