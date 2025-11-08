@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-order-card',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './order-card.html',
-  styleUrl: './order-card.css',
+  styleUrl: './order-card.css'
 })
 export class OrderCard {
-
+  @Input() order!: any;
 }

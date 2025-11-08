@@ -1,1 +1,22 @@
-<p>address-form works!</p>
+<div class="bg-white rounded-xl shadow p-6 animate-slideUp">
+  <h2 class="text-xl font-semibold mb-4 text-gray-900">Billing Details</h2>
+
+  <form class="space-y-4" (submit)="saveAddress($event)">
+    <input type="text" placeholder="Full Name" [(ngModel)]="address.name" name="name" class="input" required />
+    <input type="email" placeholder="Email Address" [(ngModel)]="address.email" name="email" class="input" required />
+    <input type="text" placeholder="Address" [(ngModel)]="address.address" name="address" class="input" required />
+    <div class="flex gap-4">
+      <input type="text" placeholder="City" [(ngModel)]="address.city" name="city" class="input flex-1" required />
+      <input type="text" placeholder="Postal Code" [(ngModel)]="address.postal" name="postal" class="input flex-1" required />
+    </div>
+
+    <!-- use the corrected button -->
+    <button
+      type="button"
+      (click)="saveAddress($event)"
+      class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition-all duration-300 transform hover:scale-[1.03]"
+    >
+      Save Address
+    </button>
+  </form>
+</div>
