@@ -1,0 +1,68 @@
+<header class="sticky top-0 z-50 w-full border-b bg-white shadow-sm transition-all duration-300 backdrop-blur-sm">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between gap-4">
+      
+      <!-- Logo -->
+      <a routerLink="/" class="flex items-center  hover:opacity-80 transition-opacity">
+        <img src="assets/images/logo.png" alt="BookStore Logo" class="h-13 w-13 " />
+        <span class="text-3xl font-bold text-gray-900n">BookStore</span>
+      </a>
+
+      <!-- Search Bar - Desktop -->
+      <div class="hidden md:flex flex-1 max-w-xl animate-fadeIn">
+        <div class="relative w-full">
+          <svg xmlns="http://www.w3.org/2000/svg"
+            class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z" />
+          </svg>
+          <input type="search" placeholder="Search books, authors, ISBN..."
+            class="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all duration-200" />
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="flex items-center gap-2">
+        <a routerLink="/catalog"
+          class="px-3 py-2 rounded-lg font-medium text-gray-700 hover:text-indigo-600 transition-colors">Browse</a>
+        <a routerLink="/about"
+          class="hidden sm:inline-flex px-3 py-2 rounded-lg font-medium text-gray-700 hover:text-indigo-600 transition-colors">About</a>
+
+        <!-- User Icon -->
+        <a routerLink="/login" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M5.121 17.804A8.965 8.965 0 0112 15c2.485 0 4.735.996 6.379 2.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </a>
+
+        <!-- Cart Icon -->
+        <a routerLink="/cart" class="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.293 2.293a1 1 0 00.707 1.707H17m-5 4h.01M12 17h.01" />
+          </svg>
+          <span *ngIf="cartCount > 0"
+            class="absolute -top-1 -right-1 bg-indigo-600 text-white text-xs font-medium h-5 w-5 flex items-center justify-center rounded-full">{{ cartCount }}</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Search Bar - Mobile -->
+    <div class="md:hidden mt-4 animate-slideDown">
+      <div class="relative w-full">
+        <svg xmlns="http://www.w3.org/2000/svg"
+          class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z" />
+        </svg>
+        <input type="search" placeholder="Search books..."
+          class="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all duration-200" />
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,98 @@
+
+
+<main class="flex-1 bg-gray-50 animate-fadeIn">
+  <div class="container mx-auto px-4 py-16">
+    <!-- Header -->
+    <div class="max-w-3xl mx-auto text-center mb-12">
+      <h1 class="text-4xl font-bold mb-4 text-gray-900 animate-slideUp">Get in Touch</h1>
+      <p class="text-xl text-gray-500">Have a question or need assistance? We're here to help!</p>
+    </div>
+
+    <!-- Contact Info Cards -->
+    <div class="grid md:grid-cols-3 gap-6 mb-12">
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition transform hover:-translate-y-2 text-center">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-100 mb-4 mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12H8m8 0a8 8 0 11-16 0 8 8 0 0116 0z" />
+          </svg>
+        </div>
+        <h3 class="font-semibold text-gray-900">Email Us</h3>
+        <p class="text-gray-500">support@bookstore.com</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition transform hover:-translate-y-2 text-center">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-100 mb-4 mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7 5 7-5M5 19h14" />
+          </svg>
+        </div>
+        <h3 class="font-semibold text-gray-900">Call Us</h3>
+        <p class="text-gray-500">+1 (555) 123-4567</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition transform hover:-translate-y-2 text-center">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-100 mb-4 mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 10l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </div>
+        <h3 class="font-semibold text-gray-900">Visit Us</h3>
+        <p class="text-gray-500">123 Book St, Reading City</p>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg animate-fadeInSlow">
+      <h2 class="text-2xl font-bold mb-4 text-gray-900">Send us a Message</h2>
+      <p class="text-gray-500 mb-6">Fill out the form below and we'll get back to you within 24 hours.</p>
+
+      <form (submit)="onSubmit($event)" class="space-y-4">
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-medium text-gray-700 mb-2">Name</label>
+            <input type="text" placeholder="Your name" required
+                   class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition" />
+          </div>
+          <div>
+            <label class="block font-medium text-gray-700 mb-2">Email</label>
+            <input type="email" placeholder="your@email.com" required
+                   class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition" />
+          </div>
+        </div>
+        <div>
+          <label class="block font-medium text-gray-700 mb-2">Subject</label>
+          <input type="text" placeholder="What is this regarding?" required
+                 class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition" />
+        </div>
+        <div>
+          <label class="block font-medium text-gray-700 mb-2">Message</label>
+          <textarea placeholder="Tell us more about your inquiry..." rows="6" required
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"></textarea>
+        </div>
+        <button type="submit"
+                class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transform hover:scale-[1.02] transition">
+          Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ✅ Success Popup Modal -->
+  <div *ngIf="showSuccess"
+       class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 animate-fadeIn">
+    <div class="bg-white p-8 rounded-xl shadow-2xl text-center max-w-sm w-full animate-scaleIn">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-green-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M5 13l4 4L19 7" />
+      </svg>
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h2>
+      <p class="text-gray-600 mb-4">We’ll get back to you as soon as possible.</p>
+      <button (click)="closeModal()"
+              class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">
+        Close
+      </button>
+    </div>
+  </div>
+</main>
+
+

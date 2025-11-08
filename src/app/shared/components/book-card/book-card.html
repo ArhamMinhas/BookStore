@@ -1,0 +1,63 @@
+<div class="group overflow-hidden rounded-lg shadow-sm bg-white hover:shadow-lg transition-all duration-300 cursor-pointer">
+  <a [routerLink]="['/book', id]" class="block">
+    <!-- Book Image -->
+    <div class="relative aspect-3/4 overflow-hidden bg-gray-100">
+      <img [src]="image" [alt]="title"
+               class="object-cover w-full h-full transition-transform duration-500 ease-out group-hover:scale-105" />
+
+      <!-- Category Badge -->
+      <span *ngIf="category"
+            class="absolute top-2 left-2 bg-indigo-600 text-white text-xs font-medium px-2 py-1 rounded">
+        {{ category }}
+      </span>
+
+      <!-- Wishlist Button -->
+      <button (click)="handleAddToWishlist($event)"
+              class="absolute top-2 right-2 bg-white/70 backdrop-blur-sm rounded-full p-2 hover:bg-white shadow transition">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="rgb(99,102,241)" class="h-4 w-4">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21.364l-7.682-8.682a4.5 4.5 0 010-6.364z" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Book Details -->
+    <div class="p-4">
+      <h3 class="font-semibold text-gray-900 line-clamp-2 mb-1 group-hover:text-indigo-600 transition-colors">
+        {{ title }}
+      </h3>
+      <p class="text-sm text-gray-500 mb-2">{{ author }}</p>
+
+      <!-- Rating -->
+      <div class="flex items-center gap-1 mb-2">
+        <ng-container *ngFor="let _ of stars; let i = index">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+               [ngClass]="i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300 fill-gray-300'"
+               class="h-4 w-4 transition-colors duration-200">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967h4.175c.969 0 1.371 1.24.588 1.81l-3.382 2.46 1.287 3.967c.3.921-.755 1.688-1.54 1.118L10 13.347l-3.366 2.902c-.785.57-1.84-.197-1.54-1.118l1.287-3.967-3.382-2.46c-.783-.57-.38-1.81.588-1.81h4.175l1.287-3.967z"/>
+          </svg>
+        </ng-container>
+        <span class="text-xs text-gray-500 ml-1">({{ rating }}.0)</span>
+      </div>
+
+      <!-- Price -->
+      <div class="flex items-center gap-2">
+        <span class="text-lg font-bold text-gray-900">${{ price.toFixed(2) }}</span>
+        <span *ngIf="originalPrice"
+              class="text-sm text-gray-400 line-through">${{ originalPrice.toFixed(2) }}</span>
+      </div>
+    </div>
+
+    <!-- Add to Cart -->
+    <div class="p-4 pt-0">
+      <button (click)="handleAddToCart($event)"
+              class="w-full bg-indigo-600 text-white font-medium py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-indigo-700 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.293 2.293a1 1 0 00.707 1.707H17m-5 4h.01M12 17h.01" />
+        </svg>
+        Add to Cart
+      </button>
+    </div>
+  </a>
+</div>

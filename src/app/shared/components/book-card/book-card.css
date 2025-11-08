@@ -1,0 +1,24 @@
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Smooth image hover using GPU acceleration */
+a img {
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: transform;
+}
+a:hover img {
+  transform: scale(1.08);
+}
+
+/* Smoother icon hover animation */
+button svg {
+  transition: transform 0.25s ease-in-out;
+  will-change: transform;
+}
+button:hover svg {
+  transform: scale(1.15);
+}

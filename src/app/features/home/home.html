@@ -1,0 +1,106 @@
+<!-- Hero Section -->
+<section class="relative h-[600px] flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 scale-100 hover:scale-105"
+       style="background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.3)),url('assets/images/hero-bookstore.jpg')">
+  </div>
+  <div class="relative z-10 text-center text-white px-4 max-w-3xl mx-auto animate-fadeIn">
+    <h1 class="text-5xl md:text-6xl font-bold mb-6 drop-shadow-lg">Discover Your Next Great Read</h1>
+    <p class="text-xl md:text-2xl mb-8 text-gray-200">
+      Explore thousands of books across all genres. Find stories that inspire, educate, and entertain.
+    </p>
+    <div class="flex gap-4 justify-center">
+      <a routerLink="/catalog"
+         class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-3 rounded-lg flex items-center gap-2 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+        Browse Collection
+      </a>
+      <a routerLink="/about"
+         class="bg-white/20 hover:bg-white/30 text-white font-medium px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105">
+        Learn More
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Books -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center gap-2 mb-8 animate-slideUp">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+      <h2 class="text-3xl font-bold text-gray-900">Featured Books</h2>
+    </div>
+
+    <!-- Using BookCard Component -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <app-book-card
+        *ngFor="let book of featuredBooks"
+        [id]="book.id"
+        [title]="book.title"
+        [author]="book.author"
+        [price]="book.price"
+        [originalPrice]="book.originalPrice"
+        [rating]="book.rating"
+        [image]="book.image"
+        [category]="book.category">
+      </app-book-card>
+    </div>
+
+    <div class="text-center">
+      <a routerLink="/books"
+         class="border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center gap-2 mx-auto w-fit transform hover:scale-105">
+        View All Books
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2" stroke="currentColor" class="h-4 w-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- New Arrivals -->
+<section class="py-16 bg-indigo-50">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center gap-2 mb-8 animate-slideUp">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+      <h2 class="text-3xl font-bold text-gray-900">New Arrivals</h2>
+    </div>
+
+    <!-- Using BookCard Component -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <app-book-card
+        *ngFor="let book of featuredBooks"
+        [id]="book.id"
+        [title]="book.title"
+        [author]="book.author"
+        [price]="book.price"
+        [originalPrice]="book.originalPrice"
+        [rating]="book.rating"
+        [image]="book.image"
+        [category]="book.category">
+      </app-book-card>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 bg-linear-to-r from-indigo-600 to-purple-600 text-white text-center animate-fadeIn">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl font-bold mb-4">Join Our Reading Community</h2>
+    <p class="text-xl mb-8 max-w-2xl mx-auto">
+      Get exclusive offers, early access to new releases, and personalized book recommendations.
+    </p>
+<a routerLink="/register"
+   class="bg-white text-indigo-700 hover:bg-gray-100 font-semibold px-6 py-3 rounded-lg flex items-center gap-2 justify-center mx-auto w-fit transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+  Sign Up Now
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+       stroke-width="2" stroke="currentColor" class="h-4 w-4">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+  </svg>
+</a>
+
+  </div>
+</section>

@@ -1,0 +1,91 @@
+<div class="flex flex-col min-h-screen">
+ 
+
+  <main class="flex-1 bg-gray-50">
+    <div class="container mx-auto px-4 py-10">
+      <h1 class="text-3xl font-bold mb-8 text-gray-900">Shopping Cart</h1>
+
+      <!-- Empty Cart -->
+      <div *ngIf="cartItems.length === 0" class="bg-white rounded-xl shadow p-10 text-center animate-fadeIn">
+        <p class="text-xl text-gray-600 mb-4">Your cart is empty 🛒</p>
+        <a routerLink="/catalog"
+           class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-[1.03]">
+          Continue Shopping
+        </a>
+      </div>
+
+      <!-- Cart With Items -->
+      <div *ngIf="cartItems.length > 0" class="grid lg:grid-cols-3 gap-8 animate-fadeInSlow">
+        <!-- Cart Items -->
+        <div class="lg:col-span-2 space-y-4">
+          <div *ngFor="let item of cartItems"
+               class="flex items-center gap-4 bg-white rounded-lg shadow hover:shadow-lg p-4 transition-all duration-300 hover:-translate-y-1">
+            <img [src]="item.image" [alt]="item.title"
+                 class="w-24 h-32 object-cover rounded-md" />
+            <div class="flex-1">
+              <h3 class="font-semibold text-gray-900">{{ item.title }}</h3>
+              <p class="text-sm text-gray-500">{{ item.author }}</p>
+              <p class="text-lg font-bold text-gray-900 mt-2">${{ item.price.toFixed(2) }}</p>
+            </div>
+
+            <div class="flex flex-col items-end gap-2">
+              <!-- Remove -->
+              <button (click)="removeItem(item.id)"
+                      class="text-red-500 hover:text-red-700 transition">
+                ✖
+              </button>
+
+              <!-- Quantity Control -->
+              <div class="flex items-center border rounded-lg">
+                <button (click)="updateQuantity(item.id, -1)"
+                        class="px-3 py-1 text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+                        [disabled]="item.quantity <= 1">−</button>
+                <span class="px-4 font-medium">{{ item.quantity }}</span>
+                <button (click)="updateQuantity(item.id, 1)"
+                        class="px-3 py-1 text-gray-700 hover:bg-gray-100">＋</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="lg:col-span-1 bg-white rounded-lg shadow p-6 h-fit sticky top-24 animate-slideUp">
+          <h2 class="text-xl font-bold mb-4 text-gray-900">Order Summary</h2>
+          <div class="space-y-3 mb-4">
+            <div class="flex justify-between text-gray-600">
+              <span>Subtotal</span>
+              <span>${{ subtotal.toFixed(2) }}</span>
+            </div>
+            <div class="flex justify-between text-gray-600">
+              <span>Shipping</span>
+              <span *ngIf="shipping === 0" class="text-green-600 font-medium">FREE</span>
+              <span *ngIf="shipping > 0">${{ shipping.toFixed(2) }}</span>
+            </div>
+            <p *ngIf="subtotal < 50" class="text-xs text-gray-500 italic">
+              Add ${{ (50 - subtotal).toFixed(2) }} more for free shipping!
+            </p>
+          </div>
+
+          <hr class="my-4 border-gray-200" />
+
+          <div class="flex justify-between text-lg font-bold mb-6 text-gray-900">
+            <span>Total</span>
+            <span>${{ total.toFixed(2) }}</span>
+          </div>
+
+          <button (click)="checkout()"
+                  class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-[1.02]">
+            Proceed to Checkout
+          </button>
+
+          <a routerLink="/catalog"
+             class="w-full inline-block text-center border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white mt-3 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-[1.02]">
+            Continue Shopping
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  
+</div>

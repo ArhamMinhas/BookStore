@@ -1,0 +1,171 @@
+<main class="flex-1">
+  <div class="container mx-auto px-4 py-8">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-3xl font-bold text-gray-900">Browse Books</h1>
+
+      <div class="flex items-center gap-4">
+        <button
+          (click)="showFilters = !showFilters"
+          class="md:hidden flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 text-sm hover:bg-gray-50 transition"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18M3 12h18m-7 8h7" />
+          </svg>
+          Filters
+        </button>
+
+        <select
+          class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+        >
+          <option>Most Popular</option>
+          <option>Newest First</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+          <option>Highest Rated</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex gap-8">
+      <!-- Sidebar Filters -->
+      <aside class="w-full md:w-64 shrink-0" [class.hidden]="!showFilters" md:block>
+        <div class="sticky top-24 space-y-6">
+          <!-- Categories -->
+          <div>
+            <h3 class="font-semibold mb-4 text-gray-900">Categories</h3>
+            <div class="space-y-3">
+              <div *ngFor="let category of categories" class="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="{{ category }}"
+                  class="rounded text-indigo-600 cursor-pointer"
+                  [checked]="selectedCategories.includes(category)"
+                  (change)="toggleCategory(category)"
+                />
+                <label for="{{ category }}" class="text-sm text-gray-600 cursor-pointer hover:text-gray-900">
+                  {{ category }}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Price Range -->
+          <div>
+            <h3 class="font-semibold mb-4 text-gray-900">Price Range</h3>
+            <div class="space-y-3">
+              <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-gray-900">
+                <input
+                  type="radio"
+                  name="price"
+                  class="text-indigo-600"
+                  (change)="selectPriceRange('under10')"
+                  [checked]="selectedPriceRange === 'under10'"
+                />
+                Under $10
+              </label>
+              <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-gray-900">
+                <input
+                  type="radio"
+                  name="price"
+                  class="text-indigo-600"
+                  (change)="selectPriceRange('10-25')"
+                  [checked]="selectedPriceRange === '10-25'"
+                />
+                $10 - $25
+              </label>
+              <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-gray-900">
+                <input
+                  type="radio"
+                  name="price"
+                  class="text-indigo-600"
+                  (change)="selectPriceRange('25-50')"
+                  [checked]="selectedPriceRange === '25-50'"
+                />
+                $25 - $50
+              </label>
+              <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-gray-900">
+                <input
+                  type="radio"
+                  name="price"
+                  class="text-indigo-600"
+                  (change)="selectPriceRange('over50')"
+                  [checked]="selectedPriceRange === 'over50'"
+                />
+                Over $50
+              </label>
+            </div>
+          </div>
+
+          <!-- Rating -->
+          <div>
+            <h3 class="font-semibold mb-4 text-gray-900">Rating</h3>
+            <div class="space-y-3">
+              <label
+                *ngFor="let r of [5,4,3,2]"
+                class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-gray-900"
+              >
+                <input
+                  type="checkbox"
+                  class="rounded text-indigo-600 cursor-pointer"
+                  (change)="toggleRating(r)"
+                  [checked]="selectedRatings.includes(r)"
+                />
+                {{ r }} Stars & Up
+              </label>
+            </div>
+          </div>
+
+          <!-- Clear Filters -->
+          <div class="pt-4">
+            <button
+              (click)="selectedCategories = []; selectedRatings = []; selectedPriceRange = null; applyFilters()"
+              class="w-full text-sm text-indigo-600 font-medium hover:underline transition"
+            >
+              Clear Filters
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Books Grid -->
+      <div class="flex-1">
+        <p class="text-gray-500 mb-6">Showing {{ filteredBooks.length }} books</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <app-book-card
+            *ngFor="let book of filteredBooks"
+            [id]="book.id"
+            [title]="book.title"
+            [author]="book.author"
+            [price]="book.price"
+            [originalPrice]="book.originalPrice"
+            [rating]="book.rating"
+            [image]="book.image"
+            [category]="book.category"
+          >
+          </app-book-card>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-center gap-2 mt-12">
+          <button
+            class="border border-gray-300 rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+          >
+            Previous
+          </button>
+          <button class="bg-indigo-600 text-white rounded-lg px-4 py-2 text-sm">1</button>
+          <button
+            class="border border-gray-300 rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+          >
+            2
+          </button>
+          <button
+            class="border border-gray-300 rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
