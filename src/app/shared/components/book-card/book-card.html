@@ -3,7 +3,7 @@
     <!-- Book Image -->
     <div class="relative aspect-3/4 overflow-hidden bg-gray-100">
       <img [src]="image" [alt]="title"
-               class="object-cover w-full h-full transition-transform duration-500 ease-out group-hover:scale-105" />
+           class="object-cover w-full h-full transition-transform duration-500 ease-out group-hover:scale-105" />
 
       <!-- Category Badge -->
       <span *ngIf="category"
@@ -14,7 +14,8 @@
       <!-- Wishlist Button -->
       <button (click)="handleAddToWishlist($event)"
               class="absolute top-2 right-2 bg-white/70 backdrop-blur-sm rounded-full p-2 hover:bg-white shadow transition">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="rgb(99,102,241)" class="h-4 w-4">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+             stroke="rgb(99,102,241)" class="h-4 w-4">
           <path stroke-linecap="round" stroke-linejoin="round"
                 d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21.364l-7.682-8.682a4.5 4.5 0 010-6.364z" />
         </svg>

@@ -1,1 +1,70 @@
-<p>wishlist works!</p>
+<div class="min-h-screen bg-gray-50 py-10 animate-fadeIn">
+  <div class="container mx-auto px-4">
+    <!-- Page Title -->
+    <div class="flex items-center justify-between mb-8 animate-slideUp">
+      <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-2">
+        ❤️ Your Wishlist
+      </h1>
+      <span *ngIf="wishlistItems.length > 0"
+            class="text-sm bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full font-medium animate-fadeIn">
+        {{ wishlistItems.length }} {{ wishlistItems.length === 1 ? 'item' : 'items' }}
+      </span>
+    </div>
+
+    <!-- Empty Wishlist State -->
+    <div *ngIf="wishlistItems.length === 0"
+         class="flex flex-col items-center justify-center py-20 bg-white rounded-xl shadow-md animate-fadeIn text-center">
+      <img src="assets/images/empty-wishlist.svg" alt="Empty Wishlist"
+           class="w-40 h-40 mb-6 opacity-80 transition-transform duration-700 hover:scale-105" />
+      <p class="text-gray-600 text-lg mb-4">Your wishlist is empty. Start exploring now!</p>
+      <a routerLink="/catalog"
+         class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+        Browse Books
+      </a>
+    </div>
+
+    <!-- Wishlist Books Grid -->
+    <div *ngIf="wishlistItems.length > 0"
+         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-slideUp">
+      <div *ngFor="let book of wishlistItems"
+           class="wishlist-card bg-white rounded-xl shadow-sm hover:shadow-xl overflow-hidden transition-all duration-500 transform hover:-translate-y-1 hover:scale-[1.03]">
+        
+        <!-- Book Image -->
+        <div class="relative overflow-hidden">
+          <img [src]="book.image" [alt]="book.title"
+               class="w-full h-60 object-cover transition-transform duration-500 ease-out hover:scale-110" />
+          <span class="absolute top-2 left-2 bg-indigo-600 text-white text-xs font-medium px-2 py-1 rounded">
+            {{ book.category || 'Book' }}
+          </span>
+        </div>
+
+        <!-- Book Info -->
+        <div class="p-5">
+          <h3 class="font-semibold text-gray-900 text-lg line-clamp-2 mb-1 hover:text-indigo-600 transition-colors">
+            {{ book.title }}
+          </h3>
+          <p class="text-sm text-gray-500 mb-3">{{ book.author }}</p>
+
+          <!-- Price & Actions -->
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-indigo-600">${{ book.price.toFixed(2) }}</span>
+
+            <div class="flex gap-2">
+              <!-- Add to Cart Button -->
+              <button (click)="addToCart(book)"
+                      class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-md">
+                Add to Cart
+              </button>
+
+              <!-- Remove Button -->
+              <button (click)="removeFromWishlist(book.id)"
+                      class="bg-gray-200 hover:bg-red-100 text-gray-600 hover:text-red-600 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 transform hover:scale-105">
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
