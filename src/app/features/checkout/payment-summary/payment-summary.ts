@@ -1,24 +1,23 @@
-import { Component, EventEmitter, Output, Input, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../../shared/services/cart.service';
 import { OrderService } from '../../../shared/services/order.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-payment-summary',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './payment-summary.html',
-  styleUrl: './payment-summary.css'
+  styleUrl: './payment-summary.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentSummary implements OnInit {
-  @Input() cartItems: any[] = [];
-  @Input() subtotal: number = 0;
-  @Input() shipping: number = 0;
-  @Input() total: number = 0;
-
-  @Output() placeOrder = new EventEmitter<void>();
-
+  cartItems: any[] = [];
+  subtotal = 0;
+  shipping = 0;
+  total = 0;
   isPlacingOrder = false;
   showSuccessPopup = false;
 
@@ -26,13 +25,16 @@ export class PaymentSummary implements OnInit {
     private cart: CartService,
     private orderService: OrderService,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private toast: ToastService,
+    private cdr: ChangeDetectorRef // ✅ Inject this
   ) {}
 
   ngOnInit(): void {
     this.cart.cartItems$.subscribe(items => {
       this.cartItems = items;
       this.updateSummary();
+      this.cdr.markForCheck(); // ✅ force refresh for cart updates
     });
   }
 
@@ -42,37 +44,46 @@ export class PaymentSummary implements OnInit {
     this.total = this.subtotal + this.shipping;
   }
 
-  // 🧠 Prevent address form interference
   handlePlaceOrder(event?: Event) {
-    if (event) event.stopPropagation();
-    if (event) event.preventDefault(); // 🚫 stops form submit reload
+    event?.preventDefault();
+    event?.stopPropagation();
 
-    if (this.cartItems.length === 0) return;
+    if (this.cartItems.length === 0) {
+      this.toast.show('Your cart is empty.', 'error');
+      return;
+    }
 
     this.isPlacingOrder = true;
+    this.cdr.markForCheck(); // ✅ update loader state immediately
 
-    // Simulated delay — smooth UX
-    setTimeout(() => {
-      const newOrder = {
-        id: 'ORD-' + Math.floor(Math.random() * 100000),
-        date: new Date().toLocaleDateString(),
-        total: this.total,
-        status: 'Pending',
-        items: [...this.cartItems]
-      };
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        const newOrder = {
+          id: 'ORD-' + Math.floor(Math.random() * 100000),
+          date: new Date().toLocaleDateString(),
+          total: this.total,
+          status: 'Pending',
+          items: [...this.cartItems]
+        };
 
-      this.orderService.addOrder(newOrder);
-      this.cart.clearCart();
+        this.ngZone.run(() => {
+          this.orderService.addOrder(newOrder);
+          this.cart.clearCart();
 
-      this.ngZone.run(() => {
-        this.isPlacingOrder = false;
-        this.showSuccessPopup = true;
-      });
-    }, 1000);
+          this.isPlacingOrder = false;
+          this.showSuccessPopup = true; // ✅ popup flag
+          this.toast.show('🎉 Order placed successfully!', 'success');
+
+          this.cdr.detectChanges(); // ✅ force UI to show popup
+        });
+      }, 800);
+    });
   }
 
   closePopupAndNavigate() {
     this.showSuccessPopup = false;
+    this.cdr.detectChanges(); // ✅ remove popup from DOM
+
     this.ngZone.run(() => {
       this.router.navigate(['/order-success']);
     });
